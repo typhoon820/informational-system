@@ -12,6 +12,10 @@ public class Song extends AbstractModel {
     private SimpleStringProperty authorName;
     private SimpleIntegerProperty ida;
 
+    public Song() {
+
+    }
+
     public int getIda() {
         return ida.get();
     }

@@ -28,6 +28,7 @@ import org.omg.CORBA.Object;
 import sample.DB.DatabaseHandler;
 import sample.Model.AbstractModel;
 import sample.Model.Song;
+import sample.Model.Test;
 import sample.utils.LogoPringStrategy;
 import sample.utils.Printer;
 import sample.utils.SongPrintStrategy;
@@ -99,15 +100,9 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         initCol();
-        //handler = DatabaseHandler.getInstance();
         loadData();
         startShowGridPane();
-
-        //scanClick(songTable);
-
-
     }
 
     private void initCol(){
@@ -138,30 +133,9 @@ public class MenuController implements Initializable {
     }
 
 
-    private void scanClick(TableView<Song> tView){
-        //final AbstractModel[] model = new AbstractModel[1];
-
-        tView.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                currentSong = tView.getSelectionModel().getSelectedItem();
-            }
-        });
-       // tView.setOnMousePressed(event ->(tView.getSelectionModel().getSelectedItem()).print());
-
-        //return model[0];
-    }
-
-
-
-    private void fillGridPane(AbstractModel model){
-
-
-
-    }
-
     private void startShowGridPane(){
         gridPane.getChildren().clear();
+        Utils.adjustConstraints(gridPane,new Test());
         Utils.adjustGrid(gridPane,1,1);
         printer.setStrategy(new LogoPringStrategy());
         printer.print(gridPane, null);

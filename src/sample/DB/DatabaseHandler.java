@@ -4,10 +4,12 @@ package sample.DB;
 import com.mysql.jdbc.Driver;
 import org.omg.PortableServer.POAManagerPackage.State;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import sample.annotations.CastToInt;
 
 import javax.sql.DataSource;
 import javax.xml.crypto.Data;
 import java.sql.*;
+import java.util.List;
 
 public class DatabaseHandler {
     private static  DatabaseHandler handler = null;
@@ -39,6 +41,63 @@ public class DatabaseHandler {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    //TODO: fix a bit, 2nd param change to Object
+    public ResultSet execPreparedQuery(String query, String param) {
+        ResultSet resultSet;
+        try{
+            PreparedStatement prstm =connection.prepareStatement(query);
+            try {
+                prstm.setInt(1,Integer.valueOf(param));
+            }
+            catch (NumberFormatException e){
+                prstm.setString(1,param);
+            }
+            resultSet = prstm.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
+    public void execCallableStatement(String procedureName, List<Object> args){
+        String sqlCall = "{call " +procedureName+ "}";
+        int i =1;
+        try {
+            CallableStatement cstmt = connection.prepareCall(sqlCall);
+            for (Object o: args) {
+                switch (o.getClass().getSimpleName()){
+                    case "Integer":
+                        cstmt.setInt(i,(Integer)o);
+                        break;
+                    case "String":
+                        cstmt.setString(i,(String)o);
+                        break;
+                }
+                i++;
+            }
+            cstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public ResultSet execPreparedQuery(String query, int param){
+        ResultSet resultSet;
+        try{
+            PreparedStatement prstm =connection.prepareStatement(query);
+            prstm.setInt(1,param);
+            resultSet = prstm.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
     }
 
     public ResultSet execQuery(String query){

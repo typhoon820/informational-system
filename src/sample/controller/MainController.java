@@ -12,17 +12,24 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.StageStyle;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import sample.DAO.UserDAO;
 import sample.DB.DatabaseHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sample.Exceptions.NoUserFoundException;
+import sample.Model.User;
+import sample.utils.Encoder;
+import sample.utils.Utils;
 
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable{
+public class MainController extends AbstractController implements Initializable{
 
 
     @FXML
@@ -37,21 +44,26 @@ public class MainController implements Initializable{
     @FXML
     private JFXButton cancelButton;
 
+    private Encoder encoder;
+
 //    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    DatabaseHandler handler;
+    private DatabaseHandler handler;
+    private UserDAO userDAO;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         handler = DatabaseHandler.getInstance();
+        userDAO = new UserDAO();
+        encoder = Encoder.getInstance();
 
     }
 
-
     @FXML
     void cancel(ActionEvent event) {
-        login.setText("");
-        password.setText("");
+        closeStage();
+        loadView("/sample/view/registration.fxml", false, "Registration");
     }
 
     @FXML
@@ -59,30 +71,31 @@ public class MainController implements Initializable{
 
         String tLogin = login.getText();
         String pWord = password.getText();
-        System.out.println(tLogin+ "  "+ pWord);
-        String query = "SELECT password from users where login='" + tLogin + "'";
-        ResultSet rs = handler.execQuery(query);
+
+        User loggingInUser = null;
         try {
-            while (rs.next()){
-                if (pWord.equals(rs.getString("password"))){
-                    closeStage();
-                    loadMenu();
-//                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//                    alert.setTitle("Success");
-//                    alert.setHeaderText(null);
-//                    alert.setContentText("You are successfully logged in");
-//                    alert.show();
-                }
-                else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Warning");
-                    alert.setContentText("Password is incorrect");
-                    alert.setHeaderText("Warning");
-                    alert.show();
-                }
+            loggingInUser = userDAO.getByLogin(tLogin);
+        }
+        catch (NoUserFoundException e) {
+            if (Utils.showWarningAlert("No user with such login").get() == ButtonType.OK) {
+                login.setText("");
+                password.setText("");
             }
-        } catch (SQLException e) {
+            return;
+        }
+        catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        if (encoder.getMethods().checkPassword(password.getText(),loggingInUser.getPassword())){
+            closeStage();
+            loadView("/sample/view/menu.fxml", true, "Menu");
+        }
+        else {
+            if (Utils.showWarningAlert("Password is incorrect").get() == ButtonType.OK) {
+                login.setText("");
+                password.setText("");
+            }
         }
     }
 
@@ -90,15 +103,7 @@ public class MainController implements Initializable{
         ((Stage)login.getScene().getWindow()).close();
     }
 
-    private void loadMenu(){
-        try{
-            Parent parent = FXMLLoader.load(getClass().getResource("/sample/view/menu.fxml"));
-            Stage stage = new Stage(StageStyle.DECORATED);
-            stage.setTitle("Menu");
-            stage.setScene(new Scene(parent));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
+
+
 }

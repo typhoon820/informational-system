@@ -7,9 +7,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="jfoenix" level="project" />
-    <orderEntry type="library" name="adaptive" level="project" />
     <orderEntry type="library" name="org.springframework.security:spring-security-crypto:4.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="mysql:mysql-connector-java:5.1.39" level="project" />
+    <orderEntry type="library" name="jfoenix-1.8.0" level="project" />
+    <orderEntry type="library" name="jfxrt" level="project" />
+    <orderEntry type="library" name="mysql:mysql-connector-java:5.1.44" level="project" />
+    <orderEntry type="library" name="jasypt" level="project" />
   </component>
 </module>
