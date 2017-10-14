@@ -3,6 +3,7 @@ package sample.Model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Band extends AbstractModel {
@@ -19,6 +20,12 @@ public class Band extends AbstractModel {
         this.songs = songs;
         this.currentArtists = currentArtists;
         this.previousArtists = previousArtists;
+    }
+
+    public Band() {
+        songs = new ArrayList<>();
+        previousArtists = new ArrayList<>();
+        currentArtists = new ArrayList<>();
     }
 
     public int getId() {

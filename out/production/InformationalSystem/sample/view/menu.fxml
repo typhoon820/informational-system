@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -14,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" style="-fx-background-color: #F0F8FF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.MenuController">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" style="-fx-background-color: #F0F8FF;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.MenuController">
    <children>
       <TabPane fx:id="mainTable" layoutY="100.0" prefHeight="479.0" prefWidth="658.0" style="-fx-background-color: #F0F8FF;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="366.0" AnchorPane.topAnchor="97.0">
         <tabs>
@@ -66,6 +68,8 @@
                 <RowConstraints maxHeight="163.0" minHeight="0.0" prefHeight="131.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
+            <JFXDrawer fx:id="insertionDrawer" defaultDrawerSize="380.0" direction="RIGHT" maxWidth="320.0" prefWidth="360.0" AnchorPane.rightAnchor="0.0" />
+            <JFXHamburger fx:id="insertionHamberger" layoutX="312.0" layoutY="14.0" stylesheets="@../css/buttonstyle.css" />
          </children>
       </AnchorPane>
    </children>

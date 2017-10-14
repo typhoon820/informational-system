@@ -3,6 +3,7 @@ package sample.Model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CD extends AbstractModel {
@@ -14,6 +15,10 @@ public class CD extends AbstractModel {
         this.id.set(id);
         this.copiesAvailable.set(id);
         this.songsOnCd = songsOnCd;
+    }
+
+    public CD() {
+        songsOnCd = new ArrayList<>();
     }
 
     public int getId() {

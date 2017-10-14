@@ -34,7 +34,7 @@ public class SongDAO extends AbstractDAO<Integer, SongTemp> {
     }
 
     @Override
-    List<SongTemp> getAll() throws NoUserFoundException {
+    public List<SongTemp> getAll() throws NoUserFoundException {
         resultSetHandler.setStrategy(new SongResultSetHandler());
         String query = "Select * from song_info";
         ResultSet rs = _handler.execQuery(query);
@@ -46,7 +46,7 @@ public class SongDAO extends AbstractDAO<Integer, SongTemp> {
         }
     }
 
-    List<SongTemp> getByName(String name) throws NoUserFoundException {
+    public List<SongTemp> getByName(String name) throws NoUserFoundException {
         resultSetHandler.setStrategy(new SongResultSetHandler());
         String query = "Select * from song_info where song_name=?";
         ResultSet rs = _handler.execPreparedQuery(query,name);

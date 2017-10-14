@@ -58,6 +58,8 @@ public class MainController extends AbstractController implements Initializable{
         userDAO = new UserDAO();
         encoder = Encoder.getInstance();
 
+        System.out.println(Utils.makeStringBeautiful("songDaoObject"));
+
     }
 
     @FXML
@@ -89,6 +91,7 @@ public class MainController extends AbstractController implements Initializable{
 
         if (encoder.getMethods().checkPassword(password.getText(),loggingInUser.getPassword())){
             closeStage();
+           // System.out.println();
             loadView("/sample/view/menu.fxml", true, "Menu");
         }
         else {

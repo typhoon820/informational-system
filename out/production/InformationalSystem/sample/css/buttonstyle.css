@@ -7,3 +7,11 @@
     -fx-border-color: greenyellow;
     -fx-font-smoothing-type: gray;
 }
+
+.jfx-hamburger StackPane{
+    -fx-background-color: ALICEBLUE;
+    -fx-image: url("../css/if_add_134224.png");
+}
+
+
+

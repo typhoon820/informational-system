@@ -18,8 +18,7 @@ public class Album extends AbstractModel {
     }
 
     public Album() {
-        this.id.set(-1);
-        this.name.set("");
+
         this.songsInAlbum = new ArrayList<>();
     }
 

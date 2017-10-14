@@ -43,6 +43,9 @@ public class SongResultSetHandler implements ResultSetStrategy {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        catch (NullPointerException e){
+            return null;
+        }
         return res;
     }
 

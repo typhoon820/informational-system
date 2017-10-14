@@ -3,6 +3,7 @@ package sample.Model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Author extends AbstractModel {
@@ -26,6 +27,10 @@ public class Author extends AbstractModel {
         this.specialization.set(specialization);
         this.previousBands = previousBands;
         this.currentBand = currentBand;
+    }
+
+    public Author() {
+        previousBands = new ArrayList<>();
     }
 
     public int getId() {

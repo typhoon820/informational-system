@@ -9,6 +9,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import sample.Model.AbstractModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class Utils {
@@ -62,5 +64,26 @@ public class Utils {
         alert.setContentText(text);
         alert.setHeaderText("Success");
         return alert.showAndWait();
+    }
+
+    public static String makeStringBeautiful(String uglyString){
+        StringBuffer res = new StringBuffer(uglyString);
+        int count =1;
+        for (int i: findAllCApitalLetters(uglyString)) {
+            res.insert(i+count-1, " ");
+            res.replace(i+count,i+count+1, res.substring(i+count, i+count+1).toLowerCase());
+            count++;
+        }
+        res.replace(0,1,res.substring(0,1).toUpperCase());
+        return res.toString();
+    }
+    private static List<Integer> findAllCApitalLetters (String s){
+        List<Integer> res = new ArrayList<>();
+        for (int i =0; i < s.length(); i++){
+            if (Character.isUpperCase(s.charAt(i))){
+                res.add(i);
+            }
+        }
+        return res;
     }
 }

@@ -1,11 +1,12 @@
 package sample.controller;
 
 
-import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.*;
+
+import java.io.IOException;
 import java.lang.String;
 
-import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import com.sun.org.apache.bcel.internal.classfile.Field;
 import com.sun.rowset.internal.Row;
 import javafx.collections.FXCollections;
@@ -13,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -25,10 +27,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import org.omg.CORBA.Object;
+import sample.DAO.SongDAO;
 import sample.DB.DatabaseHandler;
-import sample.Model.AbstractModel;
-import sample.Model.Song;
-import sample.Model.Test;
+import sample.Exceptions.NoUserFoundException;
+import sample.Model.*;
 import sample.utils.LogoPringStrategy;
 import sample.utils.Printer;
 import sample.utils.SongPrintStrategy;
@@ -38,16 +40,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.BooleanSupplier;
 import java.lang.reflect.Method;
 
 public class MenuController implements Initializable {
 
-    ObservableList<Song> songList = FXCollections.observableArrayList();
+    ObservableList<SongTemp> songList = FXCollections.observableArrayList();
+    ObservableList<AbstractModel> modelList =  FXCollections.observableArrayList();
 
     private boolean sideGridPaneIsEmpty;
 
@@ -79,20 +79,38 @@ public class MenuController implements Initializable {
     private GridPane gridPane;
 
     @FXML
-    private TableView<Song> songTable;
+    private TableView<SongTemp> songTable;
     @FXML
-    private TableColumn<Song, String> songNameCol;
+    private TableColumn<SongTemp, String> songNameCol;
 
     @FXML
-    private TableColumn<Song, String> authorCol;
+    private TableColumn<SongTemp, String> authorCol;
 
     @FXML
-    private TableColumn<Song, Integer> genreCol;
+    private TableColumn<SongTemp, Integer> genreCol;
 
     @FXML
-    private TableColumn<Song, Integer> albumCol;
+    private TableColumn<SongTemp, Integer> albumCol;
 
-    private Song currentSong;
+    @FXML
+    private JFXHamburger insertionHamberger;
+
+    @FXML
+    private JFXDrawer insertionDrawer;
+
+
+    @FXML
+    private JFXComboBox<AbstractModel> comboBox;
+
+    @FXML
+    private GridPane insertionPane;
+
+    @FXML
+    private JFXButton addButton;
+
+
+    private SongTemp currentSong;
+    private SongDAO songDAO;
     private AbstractModel model;
     DatabaseHandler handler;
     Printer printer = new Printer();
@@ -100,43 +118,61 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        handler = DatabaseHandler.getInstance();
+        songDAO = new SongDAO();
         initCol();
         loadData();
         startShowGridPane();
-    }
-
-    private void initCol(){
-        songNameCol.setCellValueFactory(new PropertyValueFactory<>("songName"));
-        authorCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
-        genreCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        albumCol.setCellValueFactory(new PropertyValueFactory<>("ida"));
-    }
-
-    private void loadData(){
-        handler = DatabaseHandler.getInstance();
-        String query = "select id_song, song_name, name from songs_authors";
-        ResultSet rs = handler.execQuery(query);
         try {
-            while(rs.next()){
-                int id = rs.getInt("id_song");
-                String songName = rs.getString("song_name");
-                String authorName = rs.getString("name");
-                int ida = rs.getInt("id_song");
-                songList.add(new Song(id,songName,authorName,ida));
-            }
-        } catch (SQLException e) {
+            VBox box = FXMLLoader.load(getClass().getResource("/sample/view/insertionBar.fxml"));
+
+            insertionDrawer.setSidePane(box);
+            //CprepareGrid(box);
+
+
+            HamburgerBackArrowBasicTransition burgerTask = new HamburgerBackArrowBasicTransition(insertionHamberger);
+            burgerTask.setRate(-1);
+            insertionHamberger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+                burgerTask.setRate(burgerTask.getRate() * -1);
+                burgerTask.play();
+
+                if (insertionDrawer.isShown())
+                    insertionDrawer.close();
+                else
+                    insertionDrawer.open();
+
+            });
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        songTable.getItems().setAll(songList);
 
     }
 
+    private void initCol() {
+        songNameCol.setCellValueFactory(new PropertyValueFactory<>("songName"));
+        authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
+        genreCol.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        albumCol.setCellValueFactory(new PropertyValueFactory<>("albums"));
+    }
 
-    private void startShowGridPane(){
+    private void loadData() {
+        try {
+            List<SongTemp> songs = songDAO.getAll();
+            for (SongTemp s : songs) {
+                songList.add(s);
+            }
+            songTable.getItems().setAll(songList);
+        } catch (NoUserFoundException e) {
+
+        }
+    }
+
+
+    private void startShowGridPane() {
         gridPane.getChildren().clear();
-        Utils.adjustConstraints(gridPane,new Test());
-        Utils.adjustGrid(gridPane,1,1);
+        Utils.adjustConstraints(gridPane, new Test());
+        Utils.adjustGrid(gridPane, 1, 1);
         printer.setStrategy(new LogoPringStrategy());
         printer.print(gridPane, null);
 
@@ -146,16 +182,17 @@ public class MenuController implements Initializable {
     void printRowInfo(MouseEvent event) {
         model = songTable.getSelectionModel().getSelectedItem();
         gridPane.getChildren().clear();
-        Utils.adjustConstraints(gridPane,model);
-        Utils.adjustGrid(gridPane,2,4);
+        Utils.adjustConstraints(gridPane, model);
+        Utils.adjustGrid(gridPane, 2, 4);
         printer.setStrategy(new SongPrintStrategy());
-        printer.print(gridPane,model);
+        printer.print(gridPane, model);
 
     }
-    private void setColWidth(int index, double width){
+
+    private void setColWidth(int index, double width) {
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPrefWidth(width);
-        gridPane.getColumnConstraints().set(index,col1);
+        gridPane.getColumnConstraints().set(index, col1);
     }
 
     @FXML
@@ -172,8 +209,25 @@ public class MenuController implements Initializable {
     void showSongs(ActionEvent event) {
         loadData();
     }
+
     @FXML
     void editFields(ActionEvent event) {
         startShowGridPane();
+    }
+
+    void prepareGrid(VBox box){
+
+        AbstractModel a;
+        initModelList((JFXComboBox<AbstractModel>) box.getChildren().get(0));
+
+
+    }
+
+    void initModelList(JFXComboBox<AbstractModel> modelList){
+        ObservableList<AbstractModel> list = FXCollections.observableArrayList( new Album(),
+                new Author(), new Band(), new CD(), new SongTemp(), new Genre());
+        modelList.setItems(list);
+        modelList.setItems(list);
+       // modelList.set
     }
 }

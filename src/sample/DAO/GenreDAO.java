@@ -11,8 +11,9 @@ public class GenreDAO extends  AbstractDAO<Integer, Genre>{
     }
 
     @Override
-    void persist(Genre entity) {
-
+    public void persist(Genre entity) {
+        String query = "insert into GENRE (genre) values ('"+entity.getName()+"')";
+        _handler.execAction(query);
     }
 
     @Override

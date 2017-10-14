@@ -33,12 +33,12 @@ public class SongTemp extends AbstractModel{
 
     public SongTemp() {
         albums = new ArrayList<>();
-        this.id.set(-1);
-        this.songName.set("");
-        this.author.set("");
-        this.genre.set("");
-        this.cds.set(-1);
-        this.version.set("");
+//        this.id.set(0);
+//        this.songName.set("");
+//        this.author.set("");
+//        this.genre.set("");
+//        this.cds.set(0);
+//        this.version.set("");
     }
 
     public int getId() {
