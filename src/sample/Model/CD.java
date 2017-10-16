@@ -2,6 +2,7 @@ package sample.Model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import sample.annotations.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ public class CD extends AbstractModel {
     }
 
     public CD() {
+        id = new SimpleIntegerProperty();
+        copiesAvailable = new SimpleIntegerProperty();
         songsOnCd = new ArrayList<>();
     }
 
@@ -29,6 +32,7 @@ public class CD extends AbstractModel {
         this.id.set(id);
     }
 
+    @Getter(num = 1)
     public int getCopiesAvailable() {
         return copiesAvailable.get();
     }
@@ -37,6 +41,7 @@ public class CD extends AbstractModel {
         this.copiesAvailable.set(copiesAvailable);
     }
 
+    @Getter(num = 2)
     public List<String> getSongsOnCd() {
         return songsOnCd;
     }

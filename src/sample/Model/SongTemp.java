@@ -2,11 +2,12 @@ package sample.Model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import sample.annotations.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongTemp extends AbstractModel{
+public class SongTemp extends AbstractModel {
     private SimpleIntegerProperty id;
     private SimpleStringProperty songName;
     private SimpleStringProperty author;
@@ -33,21 +34,24 @@ public class SongTemp extends AbstractModel{
 
     public SongTemp() {
         albums = new ArrayList<>();
-//        this.id.set(0);
-//        this.songName.set("");
-//        this.author.set("");
-//        this.genre.set("");
-//        this.cds.set(0);
-//        this.version.set("");
+        this.id = new SimpleIntegerProperty();
+        this.songName = new SimpleStringProperty();
+        this.author = new SimpleStringProperty();
+        this.genre = new SimpleStringProperty();
+        this.cds = new SimpleIntegerProperty();
+        this.version = new SimpleStringProperty();
     }
+
 
     public int getId() {
         return id.get();
     }
+
     public void setId(int id) {
         this.id.set(id);
     }
 
+    @Getter(num = 1)
     public String getSongName() {
         return songName.get();
     }
@@ -57,6 +61,7 @@ public class SongTemp extends AbstractModel{
         this.songName.set(songName);
     }
 
+    @Getter(num = 2)
     public String getAuthor() {
         return author.get();
     }
@@ -66,6 +71,7 @@ public class SongTemp extends AbstractModel{
         this.author.set(author);
     }
 
+    @Getter(num = 3)
     public String getGenre() {
         return genre.get();
     }
@@ -75,6 +81,7 @@ public class SongTemp extends AbstractModel{
         this.genre.set(genre);
     }
 
+    @Getter(num = 4)
     public List<String> getAlbums() {
         return albums;
     }
@@ -83,6 +90,7 @@ public class SongTemp extends AbstractModel{
         this.albums = albums;
     }
 
+    @Getter(num = 5)
     public int getCds() {
         return cds.get();
     }
@@ -91,6 +99,7 @@ public class SongTemp extends AbstractModel{
         this.cds.set(cds);
     }
 
+    @Getter(num = 6)
     public String getVersion() {
         return version.get();
     }

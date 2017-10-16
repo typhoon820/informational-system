@@ -7,42 +7,27 @@ import java.io.IOException;
 import java.lang.String;
 
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import com.sun.org.apache.bcel.internal.classfile.Field;
-import com.sun.rowset.internal.Row;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import org.omg.CORBA.Object;
 import sample.DAO.SongDAO;
 import sample.DB.DatabaseHandler;
 import sample.Exceptions.NoUserFoundException;
 import sample.Model.*;
-import sample.utils.LogoPringStrategy;
+import sample.utils.PrintStrategies.LogoPringStrategy;
 import sample.utils.Printer;
-import sample.utils.SongPrintStrategy;
+import sample.utils.PrintStrategies.SongPrintStrategy;
 import sample.utils.Utils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
-import java.util.function.BooleanSupplier;
-import java.lang.reflect.Method;
 
 public class MenuController implements Initializable {
 

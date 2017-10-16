@@ -4,9 +4,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.lang.String;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -73,6 +75,7 @@ public class MainController extends AbstractController implements Initializable{
 
         String tLogin = login.getText();
         String pWord = password.getText();
+
 
         User loggingInUser = null;
         try {

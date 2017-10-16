@@ -1,7 +1,6 @@
 package sample.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +13,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import sample.DAO.GenreDAO;
 import sample.Model.*;
-import sample.utils.GenrePrintStrategy;
+import sample.utils.ModelDispatcher;
+import sample.utils.PrintStrategies.GenrePrintStrategy;
 import sample.utils.Printer;
 import sample.utils.Utils;
 
@@ -35,41 +35,39 @@ public class InsertionController extends AbstractController implements Initializ
 
     @FXML
     private JFXButton addButton;
-    List<Node> n = new ArrayList<>();
+    private List<Node> n = new ArrayList<>();
 
 
-    AbstractModel model;
+    private AbstractModel model;
 
-    Printer printer = new Printer();
+    private Printer printer = new Printer();
 
-    GenreDAO genreDAO = new GenreDAO();
+    private GenreDAO genreDAO = new GenreDAO();
+
+    private ModelDispatcher modelDispatcher = new ModelDispatcher();
 
 
     @FXML
     void addModel(ActionEvent event) {
 
-        JFXTextField textField = (JFXTextField) insertionPane.getChildren().get(3);
-        System.out.println(textField.getText());
-        n.size();
-        ((Genre)model).setName(textField.getText());
-        genreDAO.persist((Genre) model);
+        //FXTextField textField = (JFXTextField) insertionPane.getChildren().get(3);
+       // System.out.println(textField.getText());
+        //n.size();
+//        Utils.getMethods(model);
+//        ((Genre) model).setName(textField.getText());
+//        genreDAO.persist((Genre) model);
+        //System.out.println(((SongTemp) model).getAuthor());
 
 
     }
 
     @FXML
     void choseItem(ActionEvent event) {
+        insertionPane.getChildren().clear();
         model = comboBox.getSelectionModel().getSelectedItem();
-        Utils.adjustGrid(insertionPane, 2, model.getClass().getDeclaredFields().length);
         Utils.adjustConstraints(insertionPane, model);
-        if(model.getClass().getSimpleName().equals("Genre")){
-            printer.setStrategy(new GenrePrintStrategy());
-            printer.print(insertionPane,model);
-        }
-        n = insertionPane.getChildren();
-        System.out.println(1);
-
-
+        Utils.adjustGrid(insertionPane, 2, model.getClass().getDeclaredFields().length);
+        Utils.setTextFieldsData(insertionPane,model);
     }
 
     void prepareGrid(VBox box) {
@@ -80,7 +78,7 @@ public class InsertionController extends AbstractController implements Initializ
 
     }
 
-    void initModelList(ComboBox<AbstractModel> modelList) {
+    private void initModelList(ComboBox<AbstractModel> modelList) {
         ObservableList<AbstractModel> list = FXCollections.observableArrayList(new Album(),
                 new Author(), new Band(), new CD(), new SongTemp(), new Genre());
         modelList.setItems(list);

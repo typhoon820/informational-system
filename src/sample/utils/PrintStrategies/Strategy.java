@@ -1,4 +1,4 @@
-package sample.utils;
+package sample.utils.PrintStrategies;
 
 import javafx.scene.layout.GridPane;
 import sample.Model.AbstractModel;

@@ -6,6 +6,7 @@ import org.omg.PortableServer.POAManagerPackage.State;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sample.annotations.CastToInt;
 
+import javax.management.Query;
 import javax.sql.DataSource;
 import javax.xml.crypto.Data;
 import java.sql.*;
@@ -21,6 +22,7 @@ public class DatabaseHandler {
     private static String password = initializer.init("password");
     private static Connection connection;
     private static Statement stmt;
+    private static PreparedStatement pstmt;
 
     private DatabaseHandler(){
         createConnection();
@@ -32,6 +34,17 @@ public class DatabaseHandler {
         }
         return handler;
     }
+
+    public PreparedStatement createQuery(String sqlQuery){
+        try {
+            pstmt = connection.prepareStatement(sqlQuery);
+            return pstmt;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     private void createConnection(){
         try{

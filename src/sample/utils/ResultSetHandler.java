@@ -1,6 +1,7 @@
 package sample.utils;
 
 import sample.Exceptions.NoUserFoundException;
+import sample.utils.ResultSetStrategies.ResultSetStrategy;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

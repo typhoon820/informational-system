@@ -2,10 +2,7 @@ package sample.DAO;
 
 import sample.Exceptions.NoUserFoundException;
 import sample.Model.Album;
-import sample.Model.SongTemp;
-import sample.annotations.CastToInt;
-import sample.utils.AlbumResultSetHandler;
-import sample.utils.SongResultSetHandler;
+import sample.utils.ResultSetStrategies.AlbumResultSetHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -2,9 +2,8 @@ package sample.DAO;
 
 import sample.Exceptions.NoUserFoundException;
 import sample.Model.User;
-import sample.utils.UserResultSetStrategy;
+import sample.utils.ResultSetStrategies.UserResultSetStrategy;
 
-import javax.jws.soap.SOAPBinding;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ public class UserDAO extends AbstractDAO<Integer, User> {
         args.add(entity.getPassword());
         args.add(entity.getStatus());
         _handler.execCallableStatement(proc, args);
+
     }
 
     public User getByLogin(String login) throws SQLException, NoUserFoundException {

@@ -3,6 +3,7 @@ package sample.utils;
 
 import javafx.scene.layout.GridPane;
 import sample.Model.AbstractModel;
+import sample.utils.PrintStrategies.Strategy;
 
 public class Printer{
     Strategy strategy;

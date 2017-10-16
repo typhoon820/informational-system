@@ -1,4 +1,4 @@
-package sample.utils;
+package sample.utils.ResultSetStrategies;
 
 import sample.Exceptions.NoUserFoundException;
 import sample.Model.AbstractModel;

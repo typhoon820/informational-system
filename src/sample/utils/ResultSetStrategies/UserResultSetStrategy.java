@@ -1,7 +1,6 @@
-package sample.utils;
+package sample.utils.ResultSetStrategies;
 
 import sample.Exceptions.NoUserFoundException;
-import sample.Model.SongTemp;
 import sample.Model.User;
 
 import java.sql.ResultSet;

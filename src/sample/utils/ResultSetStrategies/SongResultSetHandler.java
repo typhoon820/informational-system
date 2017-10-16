@@ -1,6 +1,5 @@
-package sample.utils;
+package sample.utils.ResultSetStrategies;
 
-import sample.Model.AbstractModel;
 import sample.Model.SongTemp;
 
 import java.sql.ResultSet;

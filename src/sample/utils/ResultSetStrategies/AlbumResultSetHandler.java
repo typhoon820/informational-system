@@ -1,7 +1,6 @@
-package sample.utils;
+package sample.utils.ResultSetStrategies;
 
 import sample.Model.Album;
-import sample.Model.SongTemp;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
